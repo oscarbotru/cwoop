@@ -20,3 +20,24 @@ class Product:
         """
         pass
 
+
+class Category:
+    id: int
+    title: str
+    description: str
+    products: list
+
+    def __init__(self):
+        pass
+
+    def __bool__(self):
+        """
+        Проверяет есть ли товар в категории
+        """
+        pass
+
+    def __len__(self):
+        """
+        Возвращает количество наименований товаров, у которых есть наличие на складе
+        """
+        pass
