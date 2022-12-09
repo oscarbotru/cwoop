@@ -1,3 +1,7 @@
+import json
+import os
+
+
 class Connector:
     """
     Класс коннектор к файлу, обязательно файл должен быть в json формате
@@ -11,34 +15,47 @@ class Connector:
         self.__connect()
 
     def __connect(self):
-        """
-        Проверка на существование файла с данными и
-        создание его при необходимости
-        """
-        pass
+        with open(f'{self.__data_file}', 'w+') as file:
+            file.close()
+
 
     def insert(self, data):
-        """
-        Запись данных в файл с сохранением структуры и исходных данных
-        """
-        pass
+
+        with open (self.__data_file, 'a') as datafile:
+            datafile.write(data)
+
 
     def select(self, query):
-        """
-        Выбор данных из файла с применением фильтрации
-        query содержит словарь, в котором ключ это поле для
-        фильтрации, а значение это искомое значение, например:
-        {'price': 1000}, должно отфильтровать данные по полю price
-        и вернуть все строки, в которых цена 1000
-        """
-        pass
+        key = None
+        value = None
+        for k, v in query:
+            key = k
+            value = v
+
+        with open(df) as ff:
+            file = json.load(self.df)
+            return [x for x in file if key in x and x[key] == value]
+
+
 
     def delete(self, query):
         """
         Удаление записей из файла, которые соответствуют запрос,
         как в методе select
         """
-        pass
+
+        with open(self.__data_file, 'r') as json_file:
+            data = json.load(json_file)
+
+            for k in data[query.keys()]:
+                if data[k] == query.values():
+                    del data[k]
+
+        os.remove(self.__data_file)
+
+        with open(self.__data_file, 'w') as fw:
+            json.dump(data, fw)
+
 
 
 if __name__ == '__main__':
