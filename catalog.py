@@ -1,3 +1,6 @@
+from connector import Connector
+
+
 class Product:
     id: int
     title: str
@@ -5,8 +8,15 @@ class Product:
     count: int
     category: int
 
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, data_json):
+        self.id = data_json.get('id')
+        self.title = data_json.get('title')
+        self.price = data_json.get('price')
+        self.count = data_json.get('count')
+        self.category = data_json.get('category')
+
+    def __str__(self):
+        return f'Продукт "{self.title}" с количеством на складе {self.count} с ценой {self.price} за кг'
 
     def __bool__(self):
         """
@@ -47,8 +57,8 @@ class Shop:
     """
     Класс для работы с магазином
     """
-    products: list
-    categories: list
+    # products: list
+    # categories: list
 
     def __init__(self, *args, **kwargs):
         pass
@@ -65,7 +75,16 @@ class Shop:
         Запросить номер категории и вывести все товары, которые относятся к этой категории
         Обработать вариант отсутствия введенного номера
         """
-        pass
+        cat_number = input('Введите номер категории: ')
+
+        while not cat_number.isdigit():
+            cat_number = input('Введите НОМЕР категории, а не что-то другое: ')
+
+        product_connector = Connector('products.json')
+        products_list = product_connector.select({'category': int(cat_number)})
+        for prod in products_list:
+            prod_obj = Product(prod)
+            print(prod_obj)
 
     def get_product(self):
         """
@@ -73,3 +92,8 @@ class Shop:
         Обработать вариант отсутствия введенного номера
         """
         pass
+
+
+if __name__ == '__main__':
+    my_shop = Shop()
+    my_shop.get_products()
